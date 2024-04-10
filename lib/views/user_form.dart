@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserForm extends StatelessWidget {
   final _form = GlobalKey<FormState>();
+  final Map<String, String> _formData = {};
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +14,17 @@ class UserForm extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
-                bool isValid = _form.currentState.validate();
+                bool? isValid = _form.currentState?.validate();
 
-                if (isValid) {
-                  _form.currentState.save();
+                if (isValid != null && isValid) {
+                  _form.currentState?.save();
+
+                  Provider.of(context, listen: false).put(
+                    _formData['name'],
+                    _formData['email'],
+                    _formData['avatarUrl'],
+                  );
+
                   Navigator.of(context).pop();
                 }
               },
@@ -31,20 +40,20 @@ class UserForm extends StatelessWidget {
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Nome'),
                   validator: (value) =>
-                      value.isEmpty ? 'Informe um nome' : null,
-                  onSaved: (newValue) => print(newValue),
+                      value!.isEmpty ? 'Informe um nome' : null,
+                  onSaved: (newValue) => _formData['name'] = newValue!,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'E-mail'),
                   validator: (value) =>
-                      value.isEmpty ? 'Informe um e-mail' : null,
-                  onSaved: (newValue) => print(newValue),
+                      value!.isEmpty ? 'Informe um e-mail' : null,
+                  onSaved: (newValue) => _formData['email'] = newValue!,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'URL do Avatar'),
                   validator: (value) =>
-                      value.isEmpty ? 'Informe uma URL' : null,
-                  onSaved: (newValue) => print(newValue),
+                      value!.isEmpty ? 'Informe uma URL' : null,
+                  onSaved: (newValue) => _formData['avatarUrl'] = newValue!,
                 ),
               ],
             ),

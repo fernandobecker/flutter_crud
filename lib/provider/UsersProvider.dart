@@ -21,17 +21,8 @@ class UsersProviders with ChangeNotifier {
   }
 
   void put(User user){
-    if(user == null){
-      return;
-    }
-
-    if(user.id != null && !user.id.trim().isNotEmpty && _items.containsKey(user.id)) {
-      _items.update(user.id, (_) => user (
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        avatarUrl: user.avatarUrl
-      ))
+    if(!user.id.trim().isNotEmpty && _items.containsKey(user.id)) {
+      _items.update(user.id, (_) => user );
     } else {
       final id = Random().nextDouble().toString();
       _items.putIfAbsent(id, () => const User(
