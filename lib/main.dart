@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/provider/UsersProvider.dart';
+import 'package:flutter_crud/routes/app_routes.dart';
+import 'package:flutter_crud/views/user_form.dart';
 import 'package:flutter_crud/views/user_list.dart';
 
- import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,18 +16,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
+      providers: [
+        ChangeNotifierProvider(
           create: (ctx) => UsersProviders(),
-          )],
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
             primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity
-          ),
-          home: const UserList(),
-        ),
+            visualDensity: VisualDensity.adaptivePlatformDensity),
+        home: const UserList(),
+        routes: const {
+          AppRoutes.USER_FORM: (_) => UserForm(),
+        },
+      ),
     );
   }
 }
