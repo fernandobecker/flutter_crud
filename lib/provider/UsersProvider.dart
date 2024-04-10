@@ -25,14 +25,31 @@ class UsersProviders with ChangeNotifier {
       return;
     }
 
-    final id = Random().nextDouble().toString();
-    _items.putIfAbsent(id, () => const User(
-      id: '1000',
-      name: 'Teste',
-      email: 'teste@gmail.com',
-      avatarUrl: '',
-    ));
+    if(user.id != null && !user.id.trim().isNotEmpty && _items.containsKey(user.id)) {
+      _items.update(user.id, (_) => user (
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatarUrl: user.avatarUrl
+      ))
+    } else {
+      final id = Random().nextDouble().toString();
+      _items.putIfAbsent(id, () => const User(
+        id: '1000',
+        name: 'Teste',
+        email: 'teste@gmail.com',
+        avatarUrl: '',
+      ));
+    }
 
     notifyListeners();
+  }
+
+  void remove(User user) {
+    if(user != null && user.id != null){
+      _items.remove(user.id);
+
+      notifyListeners();
+    }
   }
 }
