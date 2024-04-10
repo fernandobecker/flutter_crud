@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_crud/models/user.dart';
+import 'package:flutter_crud/provider/UsersProvider.dart';
 import 'package:provider/provider.dart';
 
 class UserForm extends StatelessWidget {
@@ -19,11 +21,12 @@ class UserForm extends StatelessWidget {
                 if (isValid != null && isValid) {
                   _form.currentState?.save();
 
-                  Provider.of(context, listen: false).put(
-                    _formData['name'],
-                    _formData['email'],
-                    _formData['avatarUrl'],
-                  );
+                  Provider.of<UsersProviders>(context, listen: false).put(User(
+                    id: _formData['id']!,
+                    name: _formData['name']!,
+                    email: _formData['email']!,
+                    avatarUrl: _formData['avatarUrl']!,
+                  ));
 
                   Navigator.of(context).pop();
                 }
