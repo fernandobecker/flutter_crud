@@ -43,21 +43,22 @@ class UserTile extends StatelessWidget {
                                 "Tem certeza que deseja excluir o usuário ?"),
                             actions: <Widget>[
                               FlatButton(
+                                child: Text("Não"),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text("Não"),
                               ),
                               FlatButton(
+                                child: Text("Sim"),
                                 onPressed: () {
+                                  Provider.of<UsersProviders>(context,
+                                          listen: false)
+                                      .remove(user);
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text("Sim"),
                               )
                             ],
                           ));
-                  Provider.of<UsersProviders>(context, listen: false)
-                      .remove(user);
                 },
                 color: Colors.red,
                 icon: const Icon(Icons.delete))
