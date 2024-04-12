@@ -8,7 +8,7 @@ class User {
   final String avatarUrl;
 
   const User({
-    this.id = '',
+    required this.id,
     required this.name,
     required this.email,
     required this.avatarUrl,
