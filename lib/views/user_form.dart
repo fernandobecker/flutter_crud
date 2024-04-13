@@ -7,6 +7,8 @@ class UserForm extends StatelessWidget {
   final _form = GlobalKey<FormState>();
   final Map<String, String> _formData = {};
 
+  UserForm({super.key});
+
   void _loadFormData(User user) {
     _formData['id'] = user.id;
     _formData['name'] = user.name;
@@ -16,9 +18,10 @@ class UserForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = ModalRoute.of(context)?.settings.arguments as User;
-
-    _loadFormData(user);
+    final User? user = ModalRoute.of(context)?.settings.arguments as User?;
+    if (user != null) {
+      _loadFormData(user);
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -33,7 +36,7 @@ class UserForm extends StatelessWidget {
                   _form.currentState?.save();
 
                   Provider.of<UsersProviders>(context, listen: false).put(User(
-                    id: _formData['id']!,
+                    id: _formData['id'] ?? '',
                     name: _formData['name']!,
                     email: _formData['email']!,
                     avatarUrl: _formData['avatarUrl']!,

@@ -21,24 +21,25 @@ class UsersProviders with ChangeNotifier {
   }
 
   void put(User user){
-    if(!user.id.trim().isNotEmpty && _items.containsKey(user.id)) {
-      _items.update(user.id, (_) => user );
+    if(user.id.trim().isEmpty || !_items.containsKey(user.id)) {
+      final id = generateUniqueId();
+      _items.putIfAbsent(id, () => user.copyWith(id: id));
     } else {
-      final id = Random().nextDouble().toString();
-      _items.putIfAbsent(id, () => const User(
-        id: '1000',
-        name: 'Teste',
-        email: 'teste@gmail.com',
-        avatarUrl: '',
-      ));
+      _items.update(user.id, (_) => user);
     }
-
     notifyListeners();
   }
 
   void remove(User user) {
     _items.remove(user.id);
-
     notifyListeners();
-    }
+  }
+
+  String generateUniqueId() {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    final random = Random();
+    const idLength = 8;
+    return List.generate(idLength, (index) => chars[random.nextInt(chars.length)]).join();
+  }
+
 }

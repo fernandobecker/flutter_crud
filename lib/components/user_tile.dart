@@ -20,7 +20,7 @@ class UserTile extends StatelessWidget {
       leading: avatar,
       title: Text(user.name),
       subtitle: Text(user.email),
-      trailing: Container(
+      trailing: SizedBox(
         width: 100,
         child: Row(
           children: <Widget>[
@@ -35,30 +35,28 @@ class UserTile extends StatelessWidget {
                 }),
             IconButton(
                 onPressed: () {
+                  BuildContext dialogContext = context;
                   showDialog(
-                      context: context,
-                      builder: (context) => const AlertDialog(
-                            title: Text("Excluir Usuário"),
-                            content: Text(
-                                "Tem certeza que deseja excluir o usuário ?"),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text("Não"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              FlatButton(
-                                child: Text("Sim"),
-                                onPressed: () {
-                                  Provider.of<UsersProviders>(context,
-                                          listen: false)
-                                      .remove(user);
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          ));
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Excluir Usuário"),
+                      content: const Text("Tem certeza que deseja excluir o usuário ?"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("Não"),
+                          onPressed: () => Navigator.of(dialogContext).pop(false),
+                        ),
+                        TextButton(
+                          child: const Text("Sim"),
+                          onPressed: () => Navigator.of(dialogContext).pop(true),
+                        )
+                      ],
+                    ),
+                  ).then((confirmed) {
+                    if (confirmed != null && confirmed) {
+                      Provider.of<UsersProviders>(dialogContext, listen: false).remove(user);
+                    }
+                  });
                 },
                 color: Colors.red,
                 icon: const Icon(Icons.delete))
